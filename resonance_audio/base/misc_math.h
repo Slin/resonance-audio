@@ -65,6 +65,21 @@ class WorldRotation : public Eigen::Quaternion<float, Eigen::DontAlign> {
   // Constructs an identity rotation.
   WorldRotation();
 
+  static WorldRotation Identity()
+  {
+    return WorldRotation(1.f, 0.f, 0.f, 0.f);
+  }
+
+  WorldRotation conjugate() const
+  {
+    return WorldRotation(w(), -x(), -y(), -z());
+  }
+
+  WorldRotation inverse() const
+  {
+    return conjugate(); // for unit quaternions
+  }
+
   // Returns the shortest arc between two |WorldRotation|s in radians.
   float AngularDifferenceRad(const WorldRotation& other) const {
     const Quaternion difference = this->inverse() * other;
